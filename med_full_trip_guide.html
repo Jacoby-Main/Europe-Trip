@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mediterranean Backpacking Trip Guide</title>
+<style>
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #f5f4ef;
+    --color-background-tertiary: #eeeee8;
+    --color-background-success: #e1f5ee;
+    --color-background-info: #e6f1fb;
+    --color-text-primary: #1a1a18;
+    --color-text-secondary: #5f5e5a;
+    --color-text-tertiary: #888780;
+    --color-text-success: #0f6e56;
+    --color-text-info: #185fa5;
+    --color-border-tertiary: rgba(26,26,24,0.15);
+    --color-border-secondary: rgba(26,26,24,0.3);
+    --color-border-primary: rgba(26,26,24,0.4);
+    --color-border-success: rgba(15,110,86,0.3);
+    --color-border-info: rgba(24,95,165,0.3);
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1e1e1c;
+      --color-background-secondary: #2a2a27;
+      --color-background-tertiary: #232320;
+      --color-background-success: #04342c;
+      --color-background-info: #042c53;
+      --color-text-primary: #e8e6dc;
+      --color-text-secondary: #a09e96;
+      --color-text-tertiary: #6e6c66;
+      --color-text-success: #5dcaa5;
+      --color-text-info: #85b7eb;
+      --color-border-tertiary: rgba(232,230,220,0.15);
+      --color-border-secondary: rgba(232,230,220,0.3);
+      --color-border-primary: rgba(232,230,220,0.4);
+      --color-border-success: rgba(93,202,165,0.3);
+      --color-border-info: rgba(133,183,235,0.3);
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    padding: 24px 16px;
+    min-height: 100vh;
+  }
+  .page-header {
+    max-width: 860px;
+    margin: 0 auto 24px;
+  }
+  .page-header h1 {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .page-header p {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+  }
+  .wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    background: var(--color-background-tertiary);
+  }
+  .tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .tab { padding:7px 16px; border:0.5px solid var(--color-border-secondary); border-radius:var(--border-radius-md); background:transparent; color:var(--color-text-secondary); font-size:13px; cursor:pointer; transition:background .15s,color .15s; }
+  .tab.active { background:var(--color-text-primary); color:var(--color-background-primary); border-color:var(--color-text-primary); }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .slabel { font-size:11px; font-weight:500; color:var(--color-text-tertiary); letter-spacing:.06em; text-transform:uppercase; margin:1.5rem 0 .5rem; }
+  .card { background:var(--color-background-primary); border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem; margin-bottom:10px; }
+  .city-btn { width:100%; text-align:left; background:var(--color-background-primary); border:0.5px solid var(--color-border-secondary); border-radius:var(--border-radius-lg); padding:.85rem 1.1rem; cursor:pointer; transition:background .15s; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; }
+  .city-btn:hover { background:var(--color-background-secondary); }
+  .city-btn.open { border-color:var(--color-border-primary); background:var(--color-background-secondary); }
+  .city-name { font-size:15px; font-weight:500; color:var(--color-text-primary); }
+  .city-meta { font-size:12px; color:var(--color-text-secondary); margin-top:2px; }
+  .city-right { display:flex; flex-direction:column; align-items:flex-end; gap:3px; }
+  .city-cost { font-size:15px; font-weight:500; color:var(--color-text-primary); }
+  .accordion-body { display:none; padding:.75rem 0 .25rem; }
+  .accordion-body.open { display:block; }
+  .acts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:8px; margin-bottom:12px; }
+  .act-card { border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-md); padding:.7rem .9rem; background:var(--color-background-primary); }
+  .act-title { font-size:13px; font-weight:500; color:var(--color-text-primary); margin-bottom:2px; }
+  .act-desc { font-size:12px; color:var(--color-text-secondary); line-height:1.5; margin-bottom:4px; }
+  .act-cost { font-size:12px; font-weight:500; }
+  .act-free { color:#0F6E56; }
+  .act-paid { color:#3C3489; }
+  .act-cheap { color:#854F0B; }
+  .costs-table { width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
+  .costs-table td { padding:5px 0; border-bottom:0.5px solid var(--color-border-tertiary); vertical-align:top; }
+  .costs-table tr:last-child td { border-bottom:none; }
+  .costs-table .lbl { color:var(--color-text-secondary); width:55%; }
+  .costs-table .val { text-align:right; font-weight:500; color:var(--color-text-primary); white-space:nowrap; }
+  .city-subtotal { display:flex; justify-content:space-between; font-size:14px; font-weight:500; padding-top:8px; border-top:1px solid var(--color-border-secondary); margin-top:4px; }
+  .tag { font-size:11px; padding:2px 8px; border-radius:99px; white-space:nowrap; display:inline-block; }
+  .tag-es { background:#FAEEDA; color:#633806; }
+  .tag-fr { background:#E6F1FB; color:#0C447C; }
+  .tag-it { background:#EAF3DE; color:#27500A; }
+  .tag-mc { background:#EEEDFE; color:#3C3489; }
+  .tag-free { background:#E1F5EE; color:#0F6E56; }
+  .tag-paid { background:#EEEDFE; color:#3C3489; }
+  .budget-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin:1rem 0; }
+  .bcard { background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:.85rem 1rem; }
+  .bcard-lbl { font-size:12px; color:var(--color-text-secondary); margin-bottom:3px; }
+  .bcard-val { font-size:20px; font-weight:500; color:var(--color-text-primary); }
+  .bcard-sub { font-size:11px; color:var(--color-text-tertiary); margin-top:2px; }
+  .total-block { background:var(--color-background-secondary); border-radius:var(--border-radius-lg); padding:1.25rem; margin:1rem 0; }
+  .trow { display:flex; justify-content:space-between; align-items:baseline; padding:5px 0; border-bottom:0.5px solid var(--color-border-tertiary); font-size:13px; }
+  .trow:last-child { border-bottom:none; }
+  .trow .tl { color:var(--color-text-secondary); }
+  .trow .tv { font-weight:500; color:var(--color-text-primary); }
+  .grand { display:flex; justify-content:space-between; align-items:baseline; padding-top:12px; border-top:1px solid var(--color-border-primary); margin-top:8px; }
+  .grand-l { font-size:16px; font-weight:500; }
+  .grand-v { font-size:24px; font-weight:500; }
+  .callout { padding:.75rem 1rem; border-radius:var(--border-radius-md); font-size:13px; margin:.75rem 0; }
+  .callout-green { background:var(--color-background-success); color:var(--color-text-success); border:0.5px solid var(--color-border-success); }
+  .callout-blue { background:var(--color-background-info); color:var(--color-text-info); border:0.5px solid var(--color-border-info); }
+  .bar-wrap { margin:.25rem 0 .75rem; }
+  .bar-row-lbl { display:flex; justify-content:space-between; font-size:12px; color:var(--color-text-secondary); margin-bottom:3px; }
+  .bar-bg { height:6px; border-radius:99px; background:var(--color-border-tertiary); overflow:hidden; margin-bottom:8px; }
+  .bar-fill { height:100%; border-radius:99px; }
+  .chevron { font-size:12px; color:var(--color-text-tertiary); transition:transform .2s; display:inline-block; }
+  .chevron.open { transform:rotate(180deg); }
+  .tip-list { list-style:none; }
+  .tip-list li { font-size:13px; color:var(--color-text-secondary); padding:3px 0 3px 14px; position:relative; line-height:1.5; }
+  .tip-list li::before { content:'→'; position:absolute; left:0; color:var(--color-text-tertiary); }
+  .save-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px; }
+  .save-card { border:0.5px solid var(--color-border-tertiary); border-radius:var(--border-radius-lg); padding:1rem 1.25rem; background:var(--color-background-primary); }
+  .save-title { font-size:14px; font-weight:500; margin-bottom:8px; }
+  .note-text { font-size:11px; color:var(--color-text-tertiary); margin-top:6px; font-style:italic; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Mediterranean backpacking trip guide</h1>
+  <p>17-day route: Lincoln, NE → Valencia → Barcelona → Marseille → Cannes → Nice → Monaco → Genoa → Cinque Terre → Rome → Lincoln, NE</p>
+</div>
+
+<div class="wrap">
+<div class="tabs" role="tablist">
+  <button class="tab active" onclick="showTab('cities')">Cities + activities</button>
+  <button class="tab" onclick="showTab('costs')">Full cost breakdown</button>
+  <button class="tab" onclick="showTab('total')">Trip total</button>
+  <button class="tab" onclick="showTab('tips')">Saving tips</button>
+</div>
+
+<div id="panel-cities" class="panel active">
+  <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 1rem;">Tap any city to expand activities and per-city costs. Budget estimates are per person.</p>
+  <div id="acc"></div>
+</div>
+
+<div id="panel-costs" class="panel">
+  <div class="slabel">Flights: Lincoln, NE to/from Europe</div>
+  <div class="card">
+    <table class="costs-table">
+      <tr><td class="lbl">Lincoln (LNK) → Chicago (ORD) — outbound</td><td class="val">$150–$250</td></tr>
+      <tr><td class="lbl">Chicago (ORD) → Valencia (VLC) — transatlantic</td><td class="val">$450–$650</td></tr>
+      <tr><td class="lbl">Rome (FCO) → Chicago (ORD) — return transatlantic</td><td class="val">$420–$650</td></tr>
+      <tr><td class="lbl">Chicago (ORD) → Lincoln (LNK) — return domestic</td><td class="val">$140–$250</td></tr>
+    </table>
+    <div class="city-subtotal"><span>Flights subtotal</span><span>$1,160–$1,800</span></div>
+    <p class="note-text">Budget target: ~$1,350. Best booked 6–12 weeks out, shoulder season (Apr–Jun, Sep–Oct). Open-jaw ticket (fly into VLC, out of FCO) often same price as round-trip.</p>
+  </div>
+
+  <div class="slabel">Rail: Eurail pass + reservations</div>
+  <div class="card">
+    <table class="costs-table">
+      <tr><td class="lbl">Eurail Global Pass — 15 travel days/2 months</td><td class="val">$430–$500</td></tr>
+      <tr><td class="lbl">Seat reservations (~8 required trains)</td><td class="val">$80–$150</td></tr>
+      <tr><td class="lbl">Cinque Terre Card (hiking + local trains)</td><td class="val">$16–$20</td></tr>
+    </table>
+    <div class="city-subtotal"><span>Rail subtotal</span><span>$526–$670</span></div>
+  </div>
+
+  <div class="slabel">Accommodation — 17 nights total</div>
+  <div class="card">
+    <table class="costs-table">
+      <tr><td class="lbl">Valencia — 2 nights hostel dorm (~$22/night)</td><td class="val">$44</td></tr>
+      <tr><td class="lbl">Barcelona — 3 nights hostel dorm (~$28/night)</td><td class="val">$84</td></tr>
+      <tr><td class="lbl">Marseille — 2 nights hostel dorm (~$26/night)</td><td class="val">$52</td></tr>
+      <tr><td class="lbl">Nice — 2 nights hostel dorm (~$30/night)</td><td class="val">$60</td></tr>
+      <tr><td class="lbl">Genoa — 2 nights hostel dorm (~$24/night)</td><td class="val">$48</td></tr>
+      <tr><td class="lbl">La Spezia — 2 nights hostel dorm (~$22/night, base for Cinque Terre)</td><td class="val">$44</td></tr>
+      <tr><td class="lbl">Rome — 3 nights hostel dorm (~$28/night)</td><td class="val">$84</td></tr>
+    </table>
+    <div class="city-subtotal"><span>Accommodation subtotal (budget mode)</span><span>$416</span></div>
+    <p class="note-text">Mid-range (private hostel room or budget hotel): add ~$200–$400 to this subtotal.</p>
+  </div>
+
+  <div class="slabel">Food — 17 days</div>
+  <div class="card">
+    <table class="costs-table">
+      <tr><td class="lbl">Breakfast (hostel free or supermarket) — 17 days</td><td class="val">$0–$35</td></tr>
+      <tr><td class="lbl">Lunch (street food, market, bakery avg ~$8) — 17 days</td><td class="val">$136</td></tr>
+      <tr><td class="lbl">Dinner (mix cheap restaurants + self-catering ~$12 avg) — 17 days</td><td class="val">$204</td></tr>
+      <tr><td class="lbl">Drinks, coffee, snacks — 17 days (~$5/day)</td><td class="val">$85</td></tr>
+    </table>
+    <div class="city-subtotal"><span>Food subtotal</span><span>$425–$460</span></div>
+  </div>
+
+  <div class="slabel">Activities — across all cities</div>
+  <div class="card">
+    <table class="costs-table">
+      <tr><td class="lbl">Valencia: City of Arts exterior walk, beach, Mercado Central</td><td class="val">Free–$5</td></tr>
+      <tr><td class="lbl">Barcelona: Park Güell (free zone), Gothic Quarter, Barceloneta</td><td class="val">Free</td></tr>
+      <tr><td class="lbl">Barcelona: Sagrada Família entry (optional)</td><td class="val">$25–$30</td></tr>
+      <tr><td class="lbl">Marseille: Calanques National Park bike hire</td><td class="val">$15–$18</td></tr>
+      <tr><td class="lbl">Marseille: Le Mucem museum</td><td class="val">$8–$10</td></tr>
+      <tr><td class="lbl">Nice: beaches, Promenade des Anglais, old town walk</td><td class="val">Free</td></tr>
+      <tr><td class="lbl">Nice: Matisse Museum</td><td class="val">Free–$12</td></tr>
+      <tr><td class="lbl">Monaco: Changing of Guard, Monte Carlo walk</td><td class="val">Free</td></tr>
+      <tr><td class="lbl">Monaco: Stade Nautique pool swim</td><td class="val">$8–$12</td></tr>
+      <tr><td class="lbl">Genoa: Palazzi dei Rolli palace entry</td><td class="val">$8–$12</td></tr>
+      <tr><td class="lbl">Cinque Terre: card + hiking trails (2 days)</td><td class="val">$16–$20</td></tr>
+      <tr><td class="lbl">Rome: Colosseum + Roman Forum combo ticket</td><td class="val">$18–$25</td></tr>
+      <tr><td class="lbl">Rome: Vatican Museums + Sistine Chapel (optional)</td><td class="val">$22–$28</td></tr>
+      <tr><td class="lbl">Free walking tours (tip-based, most cities)</td><td class="val">$5–$15/city</td></tr>
+      <tr><td class="lbl">Misc. local transport, city buses, metro</td><td class="val">$30–$50</td></tr>
+    </table>
+    <div class="city-subtotal"><span>Activities subtotal</span><span>$155–$237</span></div>
+  </div>
+
+  <div class="slabel">Pre-trip essentials</div>
+  <div class="card">
+    <table class="costs-table">
+      <tr><td class="lbl">Travel insurance (~3 weeks, World Nomads)</td><td class="val">$60–$100</td></tr>
+      <tr><td class="lbl">eSIM for Europe (data, e.g. Airalo)</td><td class="val">$15–$25</td></tr>
+      <tr><td class="lbl">Packing / gear (if needed)</td><td class="val">$0–$100</td></tr>
+    </table>
+    <div class="city-subtotal"><span>Pre-trip subtotal</span><span>$75–$225</span></div>
+  </div>
+</div>
+
+<div id="panel-total" class="panel">
+  <div class="budget-grid">
+    <div class="bcard"><div class="bcard-lbl">Flights (all 4 legs)</div><div class="bcard-val">$1,350</div><div class="bcard-sub">budget estimate</div></div>
+    <div class="bcard"><div class="bcard-lbl">Rail pass + reservations</div><div class="bcard-val">$598</div><div class="bcard-sub">mid estimate</div></div>
+    <div class="bcard"><div class="bcard-lbl">Accommodation</div><div class="bcard-val">$416</div><div class="bcard-sub">17 nights, dorms</div></div>
+    <div class="bcard"><div class="bcard-lbl">Food</div><div class="bcard-val">$443</div><div class="bcard-sub">17 days avg</div></div>
+    <div class="bcard"><div class="bcard-lbl">Activities</div><div class="bcard-val">$196</div><div class="bcard-sub">mid estimate</div></div>
+    <div class="bcard"><div class="bcard-lbl">Pre-trip essentials</div><div class="bcard-val">$150</div><div class="bcard-sub">insurance, eSIM</div></div>
+  </div>
+
+  <div class="total-block">
+    <div class="trow"><span class="tl">Flights (Lincoln ↔ Chicago ↔ Valencia / Rome)</span><span class="tv">~$1,350</span></div>
+    <div class="trow"><span class="tl">Eurail pass + seat reservations + Cinque Terre card</span><span class="tv">~$598</span></div>
+    <div class="trow"><span class="tl">Accommodation — 17 nights in hostels</span><span class="tv">~$416</span></div>
+    <div class="trow"><span class="tl">Food — 17 days (mix of markets, cheap eats, restaurants)</span><span class="tv">~$443</span></div>
+    <div class="trow"><span class="tl">Activities across all 9 stops</span><span class="tv">~$196</span></div>
+    <div class="trow"><span class="tl">Travel insurance + eSIM + misc.</span><span class="tv">~$150</span></div>
+    <div class="trow"><span class="tl">Emergency buffer (~10%)</span><span class="tv">~$315</span></div>
+    <div class="grand">
+      <span class="grand-l">Recommended save target</span>
+      <span class="grand-v">~$3,468</span>
+    </div>
+  </div>
+
+  <div class="callout callout-green">Save $3,500 to be comfortable. This covers everything — flights, rail, beds, food, activities, and a buffer — for 17 days at budget-to-mid level.</div>
+  <div class="callout callout-blue">Going in peak summer (Jul–Aug)? Add $400–$600. Last-minute flight booking? Add $200–$400 more.</div>
+
+  <div class="slabel">Where your money goes</div>
+  <div class="card">
+    <div class="bar-row-lbl"><span>Flights (all legs)</span><span>39%</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:39%;background:#185FA5"></div></div>
+    <div class="bar-row-lbl"><span>Rail pass + reservations</span><span>17%</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:17%;background:#3B6D11"></div></div>
+    <div class="bar-row-lbl"><span>Food</span><span>13%</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:13%;background:#854F0B"></div></div>
+    <div class="bar-row-lbl"><span>Accommodation</span><span>12%</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:12%;background:#3C3489"></div></div>
+    <div class="bar-row-lbl"><span>Buffer + misc.</span><span>13%</span></div>
+    <div class="bar-bg"><div class="bar-fill" style="width:13%;background:#888780"></div></div>
+    <div class="bar-row-lbl"><span>Activities</span><span>6%</span></div>
+    <div class="bar-bg" style="margin-bottom:0"><div class="bar-fill" style="width:6%;background:#0F6E56"></div></div>
+  </div>
+
+  <div class="slabel">Cost per day breakdown</div>
+  <div class="card">
+    <table class="costs-table">
+      <tr><td class="lbl">Average daily cost (in Europe, excl. flights + rail pass)</td><td class="val">~$62/day</td></tr>
+      <tr><td class="lbl">Budget mode (markets, free sights, dorms)</td><td class="val">~$50/day</td></tr>
+      <tr><td class="lbl">Mid mode (some restaurant meals, paid sights)</td><td class="val">~$85/day</td></tr>
+      <tr><td class="lbl">Total incl. flights + rail amortized over 17 days</td><td class="val">~$204/day</td></tr>
+    </table>
+  </div>
+</div>
+
+<div id="panel-tips" class="panel">
+  <div class="save-grid">
+    <div class="save-card">
+      <div class="save-title">Fly open-jaw, not round-trip</div>
+      <ul class="tip-list">
+        <li>Book: Lincoln → Valencia in, Rome → Lincoln out</li>
+        <li>Avoids backtracking + often same price as round-trip</li>
+        <li>Search Google Flights with "Add destination" for open-jaw</li>
+        <li>Save: no extra train back to Valencia (~$0–$50)</li>
+      </ul>
+    </div>
+    <div class="save-card">
+      <div class="save-title">Amtrak to Chicago instead of flying</div>
+      <ul class="tip-list">
+        <li>California Zephyr: Lincoln → Chicago ~$50–85 vs ~$200+ flying</li>
+        <li>Saves ~$230–$330 on domestic legs combined</li>
+        <li>No tight connection stress before long-haul flight</li>
+        <li>Scenic and relaxing — a good way to start the trip</li>
+      </ul>
+    </div>
+    <div class="save-card">
+      <div class="save-title">Go in shoulder season</div>
+      <ul class="tip-list">
+        <li>April–June or September–October</li>
+        <li>Flights: $300–$500 cheaper than July–August</li>
+        <li>Hostel dorms: up to 40% cheaper than peak</li>
+        <li>Barcelona weekday hostel ~$28 vs ~$80 on summer weekends</li>
+      </ul>
+    </div>
+    <div class="save-card">
+      <div class="save-title">Skip overnight stays in Monaco + Cannes</div>
+      <ul class="tip-list">
+        <li>Day-trip both from Nice — saves 2 nights of accommodation</li>
+        <li>Hostel in Monaco/Cannes = $80–$120/night</li>
+        <li>Nice → Monaco TER train: ~$5, no reservation needed</li>
+        <li>Total saved: ~$160–$240</li>
+      </ul>
+    </div>
+    <div class="save-card">
+      <div class="save-title">Spain: menu del día every day</div>
+      <ul class="tip-list">
+        <li>Available at most restaurants for lunch in Valencia + Barcelona</li>
+        <li>3 courses + drink for $10–$13 vs $25–$35 for dinner</li>
+        <li>Make lunch your big meal — eat cheaply at breakfast + dinner</li>
+        <li>Estimated saving over 5 days in Spain: $50–$75</li>
+      </ul>
+    </div>
+    <div class="save-card">
+      <div class="save-title">Use supermarkets everywhere</div>
+      <ul class="tip-list">
+        <li>Mercadona (Spain), Lidl/Aldi (France + Italy) everywhere</li>
+        <li>Breakfast + picnic lunch from supermarket: $4–$7 total</li>
+        <li>Hostel kitchens: cook dinner 3–4 times across the trip</li>
+        <li>Estimated total food saving: $80–$120 over 17 days</li>
+      </ul>
+    </div>
+    <div class="save-card">
+      <div class="save-title">TER regional trains on the Riviera</div>
+      <ul class="tip-list">
+        <li>Marseille → Cannes → Nice: TER, no reservation, covered by Eurail</li>
+        <li>TGV on same stretch costs $10–$30 extra in reservation fees</li>
+        <li>Only takes ~30 min longer and is far more scenic</li>
+        <li>Save ~$30–$50 on Riviera train reservations</li>
+      </ul>
+    </div>
+    <div class="save-card">
+      <div class="save-title">Free walking tours in every city</div>
+      <ul class="tip-list">
+        <li>Available in Valencia, Barcelona, Marseille, Nice, Rome, Genoa</li>
+        <li>Tip-based — $5–10 is totally fine</li>
+        <li>Best way to get your bearings on day 1 in each city</li>
+        <li>Skip paid city tours ($25–$45) that cover the same ground</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const cities = [
+  {name:"Valencia",country:"Spain",days:"Days 1–2 · 2 nights",tagCls:"tag-es",cost:"$70–$116",desc:"Spain's Mediterranean birthplace of paella, with a stunning beachfront and futuristic architecture sitting alongside a medieval old town.",acts:[{title:"Turia Gardens bike ride",desc:"9km of park along the old riverbed — rent a bike for a flat scenic ride through the whole city.",cost:"Free–$8",cls:"act-cheap"},{title:"City of Arts & Sciences",desc:"Futuristic complex by Santiago Calatrava. The exterior and grounds are free to walk. Entry to L'Hemisfèric or Oceanogràfic is extra.",cost:"Free exterior / $20–35 inside",cls:"act-cheap"},{title:"Mercado Central",desc:"One of Europe's largest covered markets. Try fresh paella, seafood, and fruit for under $10.",cost:"Free entry, $5–10 for food",cls:"act-free"},{title:"Valencia Cathedral + El Miguelete tower",desc:"Climb the Gothic bell tower for panoramic city views.",cost:"$4–6",cls:"act-paid"},{title:"Malvarrosa beach",desc:"2-mile sandy beach right in the city. Free, uncrowded in shoulder season.",cost:"Free",cls:"act-free"},{title:"El Carmen neighborhood",desc:"Bohemian old town quarter packed with street art, tapas bars, and medieval walls.",cost:"Free",cls:"act-free"}],costs:[["Hostel dorm (2 nights × ~$22)","$44"],["Food (2 days — street food + markets)","$30–$40"],["Activities (mix of free + 1–2 paid)","$5–$20"]],total:"$79–$104"},
+  {name:"Barcelona",country:"Spain",days:"Days 3–5 · 3 nights",tagCls:"tag-es",cost:"$130–$210",desc:"Gaudí's city — wild architecture, a buzzing beach, world-class tapas, and a Gothic quarter that feels straight out of a storybook.",acts:[{title:"Park Güell (free zone)",desc:"Skip the ticketed zone and explore the free terraces and gardens still full of Gaudí mosaics and incredible city views.",cost:"Free",cls:"act-free"},{title:"Gothic Quarter walk",desc:"Medieval labyrinth of lanes, Roman walls, hidden plazas, and the Barcelona Cathedral.",cost:"Free",cls:"act-free"},{title:"Sagrada Família",desc:"Gaudí's unfinished masterpiece. Book online in advance to skip the queue.",cost:"$30–$38",cls:"act-paid"},{title:"La Barceloneta beach",desc:"The city beach just south of the Gothic Quarter. Sandy, buzzing, and totally free.",cost:"Free",cls:"act-free"},{title:"La Boqueria market",desc:"Famous indoor food market on Las Ramblas. Great for a snack — avoid tourist-trap stalls at entrance.",cost:"Free entry, $5–12 for food",cls:"act-cheap"},{title:"Montjuïc castle",desc:"Take the cable car or hike up for incredible views over the port and city.",cost:"$5 castle / ~$15 cable car",cls:"act-cheap"},{title:"El Born neighborhood + Picasso Museum",desc:"Trendy neighborhood with medieval streets and a world-class Picasso collection.",cost:"$14–$17 museum",cls:"act-paid"}],costs:[["Hostel dorm (3 nights × ~$28)","$84"],["Food (3 days — tapas, markets, menu del día)","$45–$65"],["Activities (free sights + 1 paid, e.g. Sagrada Família)","$0–$38"]],total:"$129–$187"},
+  {name:"Marseille",country:"France",days:"Days 6–7 · 2 nights",tagCls:"tag-fr",cost:"$93–$151",desc:"France's oldest city — a gritty, soulful port with dramatic limestone calanques, North African food culture, and way fewer tourists than Paris.",acts:[{title:"Calanques National Park",desc:"Stunning limestone cliffs and turquoise coves between Marseille and Cassis. Hire a bike or hike in.",cost:"Free (bike hire $15–18)",cls:"act-cheap"},{title:"Le Mucem museum",desc:"Museum of Mediterranean civilizations in an iconic waterfront building.",cost:"$8–$10",cls:"act-paid"},{title:"Vieux-Port waterfront",desc:"The old harbor — free to walk, lined with fishmongers, cafés, and the morning fish market.",cost:"Free",cls:"act-free"},{title:"Notre-Dame de la Garde",desc:"Stunning Neo-Byzantine basilica on the city's highest hill with panoramic sea views.",cost:"Free",cls:"act-free"},{title:"Plage des Catalans",desc:"Main urban beach just west of the old port. Sandy, free, and accessible on foot.",cost:"Free",cls:"act-free"},{title:"Le Panier neighborhood",desc:"Oldest quartier in Marseille — colorful, hilly streets with independent boutiques and street art.",cost:"Free",cls:"act-free"}],costs:[["Hostel dorm (2 nights × ~$26)","$52"],["Food (2 days — boulangeries, Vieux-Port)","$28–$45"],["Activities (bike hire + Le Mucem)","$23–$28"]],total:"$103–$125"},
+  {name:"Cannes",country:"France",days:"Day 8 · Day trip from Nice",tagCls:"tag-fr",cost:"$10–$25",desc:"Glamorous film festival town best enjoyed as a quick day trip — walk the Croisette, soak in the Riviera vibe, and move on without paying resort prices.",acts:[{title:"La Croisette promenade",desc:"The iconic palm-lined seafront boulevard where stars walk during the film festival.",cost:"Free",cls:"act-free"},{title:"Le Suquet old town",desc:"Hilltop medieval village above the harbor with great views over the bay.",cost:"Free",cls:"act-free"},{title:"Public beach (Plages du Midi)",desc:"West of the center, the public beach sections are free. Bring a towel.",cost:"Free",cls:"act-free"},{title:"Marché Forville",desc:"Daily covered market with Provençal produce, cheeses, and flowers.",cost:"Free entry, $5–8 for food",cls:"act-cheap"}],costs:[["Train Nice ↔ Cannes (TER, Eurail covered)","$0"],["Food (lunch + snack)","$10–$18"],["Activities","Free"]],total:"$10–$18 (day trip only)"},
+  {name:"Nice",country:"France",days:"Days 8–9 · 2 nights (base for Cannes + Monaco)",tagCls:"tag-fr",cost:"$93–$155",desc:"The French Riviera's most liveable city — 7km of pebble beach, a colorful Italian-influenced old town, and genuinely world-class free culture.",acts:[{title:"Promenade des Anglais",desc:"The famous 7km seaside promenade. Walk or rent a bike for free views of the Riviera.",cost:"Free",cls:"act-free"},{title:"Vieux Nice (old town)",desc:"Labyrinth of Baroque streets, flower market (Cours Saleya), and incredible window-shopping.",cost:"Free",cls:"act-free"},{title:"Cap de Nice coastal hike",desc:"Hike from old town out to Cap de Nice and down to Villefranche-sur-Mer. Stunning cliff views.",cost:"Free",cls:"act-free"},{title:"Matisse Museum",desc:"Nearly 600 of Matisse's works in a beautiful Genoese villa. Free on first Sunday of the month.",cost:"Free–$12",cls:"act-cheap"},{title:"Castle Hill (Colline du Château)",desc:"Ruined castle on a clifftop above old town with incredible harbor views.",cost:"Free (elevator ~$2)",cls:"act-free"},{title:"Nice food scene",desc:"Socca, pissaladière, and pan bagnat sandwich are all Niçois specialties under $5 each.",cost:"$4–$7 per item",cls:"act-cheap"}],costs:[["Hostel dorm (2 nights × ~$30)","$60"],["Food (2 days — boulangeries, Niçois street food)","$30–$50"],["Activities (museum, hike, beach)","$0–$14"]],total:"$90–$124"},
+  {name:"Monaco",country:"Monaco",days:"Day 10 · Day trip from Nice",tagCls:"tag-mc",cost:"$16–$40",desc:"The world's second-smallest country is absurdly glamorous — but with a little planning you can enjoy the spectacle on a backpacker's budget.",acts:[{title:"Changing of the Guard",desc:"Daily ceremony at the Prince's Palace at 11:55am. Free to watch — arrive 10 min early.",cost:"Free",cls:"act-free"},{title:"Monte Carlo walk",desc:"Stroll past the Casino, Hotel de Paris, and superyachts in the harbor.",cost:"Free",cls:"act-free"},{title:"Stade Nautique Rainier III pool",desc:"Public swimming pool literally inside the Monaco Grand Prix circuit.",cost:"$8–$12",cls:"act-cheap"},{title:"Monaco Old Town (Le Rocher)",desc:"The original rock-top village with the Prince's Palace and narrow cobbled streets.",cost:"Free to wander",cls:"act-free"},{title:"Oceanographic Museum (optional splurge)",desc:"Prince Albert I's world-famous marine museum with a stunning aquarium.",cost:"$22–$28",cls:"act-paid"}],costs:[["Train Nice ↔ Monaco (TER, Eurail covered)","$0"],["Pool swim or other activity","$8–$12"],["Food (bring a packed lunch from Nice)","$8–$18"]],total:"$16–$30 (day trip only)"},
+  {name:"Genoa",country:"Italy",days:"Days 11–12 · 2 nights",tagCls:"tag-it",cost:"$72–$120",desc:"Italy's most underrated city — a vast medieval center, incredible pesto, and a working port with real local life away from tourist crowds.",acts:[{title:"Caruggi streets walk",desc:"Genoa's medieval labyrinth of narrow lanes is the largest medieval center in Europe. Get lost in it.",cost:"Free",cls:"act-free"},{title:"Strada Nuova palaces",desc:"Renaissance palaces converted into art museums. Palazzo Rosso and Palazzo Bianco are highlights.",cost:"$8–$12 combined",cls:"act-paid"},{title:"Boccadasse fishing village",desc:"Tiny, colorful fishing village within the city limits. Pastel houses stacked above a small beach.",cost:"Free",cls:"act-free"},{title:"Eat pesto and focaccia",desc:"Genoa invented pesto. Focaccia by the slice for $1.50 is not a joke.",cost:"$2–$8",cls:"act-free"},{title:"Porto Antico waterfront",desc:"Renzo Piano-redesigned waterfront with the old harbor and city beach. Great evening stroll.",cost:"Free",cls:"act-free"},{title:"Lanterna lighthouse",desc:"One of Europe's oldest lighthouses at the port entrance. Walk the breakwater to see it.",cost:"Free",cls:"act-free"}],costs:[["Hostel dorm (2 nights × ~$24)","$48"],["Food (2 days — focaccia, pesto pasta, local bars)","$24–$40"],["Activities (palaces + free sights)","$8–$12"]],total:"$80–$100"},
+  {name:"Cinque Terre",country:"Italy",days:"Days 13–14 · 2 nights (La Spezia base)",tagCls:"tag-it",cost:"$76–$120",desc:"Five pastel fishing villages clinging to dramatic cliffsides above the Ligurian Sea — one of the most visually stunning places in Europe.",acts:[{title:"Sentiero Azzurro coastal hike",desc:"The famous blue trail connecting all five villages. Buy the Cinque Terre Card.",cost:"$8–$10/day card",cls:"act-cheap"},{title:"Village hopping by train",desc:"The Cinque Terre Card covers the local train between all five villages — hop on and off freely.",cost:"Included in card",cls:"act-free"},{title:"Vernazza harbor swim",desc:"The most picturesque village has a small harbor beach. Swim in the clear green water.",cost:"Free",cls:"act-free"},{title:"Manarola at sunset",desc:"Hike above Manarola for the most famous Cinque Terre view at golden hour.",cost:"Free",cls:"act-free"},{title:"Corniglia village",desc:"The middle village on a high cliff — only reached by 377 steps or a shuttle. Most peaceful.",cost:"Free",cls:"act-free"},{title:"Fresh pesto trofie pasta",desc:"Trofie al pesto (the regional specialty) at a small local trattoria.",cost:"$10–$14",cls:"act-cheap"}],costs:[["Hostel dorm in La Spezia (2 nights × ~$22)","$44"],["Cinque Terre Card (2 days)","$16–$20"],["Food (2 days — focaccia, pesto, gelato)","$25–$40"]],total:"$85–$104"},
+  {name:"Rome",country:"Italy",days:"Days 15–17 · 3 nights",tagCls:"tag-it",cost:"$150–$225",desc:"The Eternal City — 3,000 years of history in every direction, the world's best gelato, and more free world-class sights than anywhere else on Earth.",acts:[{title:"Colosseum + Roman Forum + Palatine Hill",desc:"Book online at least a week ahead to skip the queue. The combo ticket covers all three for a full day.",cost:"$18–$25 combo",cls:"act-paid"},{title:"Vatican Museums + Sistine Chapel",desc:"Michelangelo's ceiling is worth it. Book online in advance. Budget 3–4 hours.",cost:"$22–$28",cls:"act-paid"},{title:"Trevi Fountain, Spanish Steps, Pantheon",desc:"Three of Rome's most iconic sites. Go early morning to beat the crowds.",cost:"Free (Pantheon ~$5)",cls:"act-free"},{title:"Trastevere neighborhood",desc:"Rome's most atmospheric neighborhood — winding medieval streets and cheap aperitivo bars.",cost:"Free",cls:"act-free"},{title:"Villa Borghese park",desc:"Rome's Central Park. Walk, jog, or rent a rowboat on the lake.",cost:"Free park / $15 gallery",cls:"act-free"},{title:"Testaccio market + food",desc:"Rome's best food market. Try supplì (fried rice balls) and cacio e pepe at local spots.",cost:"$5–$12 for a feast",cls:"act-cheap"},{title:"Appian Way",desc:"Walk along one of the world's oldest roads, lined with ancient tombs and pines.",cost:"Free",cls:"act-free"}],costs:[["Hostel dorm (3 nights × ~$28)","$84"],["Food (3 days — markets, trattorias, gelato)","$45–$65"],["Activities (Colosseum + Vatican + free sights)","$40–$53"]],total:"$169–$202"}
+];
+
+function buildAccordion(){
+  const acc = document.getElementById('acc');
+  cities.forEach((c,i)=>{
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <button class="city-btn" id="btn-${i}" onclick="toggle(${i})">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="city-name">${c.name}</span>
+            <span class="tag ${c.tagCls}">${c.country}</span>
+          </div>
+          <div class="city-meta">${c.days}</div>
+        </div>
+        <div class="city-right">
+          <span class="city-cost">${c.cost}</span>
+          <span class="chevron" id="chev-${i}">&#9660;</span>
+        </div>
+      </button>
+      <div class="accordion-body" id="body-${i}">
+        <p style="font-size:13px;color:var(--color-text-secondary);margin:0 0 1rem">${c.desc}</p>
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px">Things to do</div>
+        <div class="acts-grid">${c.acts.map(a=>`
+          <div class="act-card">
+            <div class="act-title">${a.title}</div>
+            <div class="act-desc">${a.desc}</div>
+            <div class="act-cost ${a.cls}">${a.cost}</div>
+          </div>`).join('')}
+        </div>
+        <div style="font-size:11px;font-weight:500;color:var(--color-text-tertiary);letter-spacing:.06em;text-transform:uppercase;margin:1rem 0 .5rem">City cost estimate</div>
+        <table class="costs-table">
+          ${c.costs.map(r=>`<tr><td class="lbl">${r[0]}</td><td class="val">${r[1]}</td></tr>`).join('')}
+        </table>
+        <div class="city-subtotal"><span>Total for ${c.name}</span><span>${c.total}</span></div>
+      </div>`;
+    acc.appendChild(wrap);
+  });
+}
+
+function toggle(i){
+  const body = document.getElementById('body-'+i);
+  const btn = document.getElementById('btn-'+i);
+  const chev = document.getElementById('chev-'+i);
+  const open = body.classList.contains('open');
+  body.classList.toggle('open',!open);
+  btn.classList.toggle('open',!open);
+  chev.classList.toggle('open',!open);
+}
+
+function showTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+buildAccordion();
+</script>
+</body>
+</html>
